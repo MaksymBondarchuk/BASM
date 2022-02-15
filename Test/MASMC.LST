@@ -1,0 +1,110 @@
+Microsoft (R) Macro Assembler Version 5.00                  4/7/14 11:41:57
+                                                             Page     1-1
+
+
+				.386 
+				 
+ 0000				DATA	SEGMENT 
+ 0000  FF					ID1		DB	255 
+ 0001  000F					ID2		DW	1111B 
+ 0003  F65FC35B					iD3		DD	5BC35FF
+				6H 
+						 
+ 0007  0A000000					AR1		DD	10 
+ 000B  0A000000					AR2		DD	10 
+ 000F				DATA	ENDS 
+				 
+ 0000				CODE	SEGMENT 
+						ASSUME DS:DATA, CS:CODE 
+				 
+ 0000					BEGIN: 
+						; AND test 
+ 0000  B9 0000000A				mov		ecx, 10 
+ 0005  B3 D4					MOV		BL, 11H + 00001
+				111B * 13 
+ 0007  02 C3					ADD		AL, BL 
+ 0009  03 D9					ADD		EBX, ECX 
+						 
+						; OR test 
+ 000B  B1 01					MOV		CL, 0FH * 0 + 1
+				  
+ 000D  0A 8F 00000000 R				OR		CL, ID1[EDI] 
+ 0013  0F 85 0000002D R				JNZ		LABELF 
+					 
+						; MOV test 
+ 0019  B8 0000FFFF				MOV		EAX, 0FFFFH 
+ 001E  B3 0A					MOV		BL, 0AH 
+					 
+						; TEST test 
+ 0020  84 86 00000003 R				TEST	iD3[ESI], AL 
+masmc.ASM(32): warning A4031: Operand types must match
+ 0026  2E: 85 87 00000003 R			TEST	CS:iD3[EDI], EAX 
+					 
+ 002D					LABELF: 
+						; SHL test 
+ 002D  D1 A6 00000003 R				SHL		ID3[ESI], 00000
+				001B 
+ 0033  C0 A6 00000000 R 11			SHL		ID1[ESI], 11H 
+						 
+						; JNZ TEST 
+ 003A  75 C4					JNZ		BEGIN 
+					 
+						; SEGMENT change	 
+ 003C  0D					TMP1    DB	13 
+ 003D  2E: 84 87 0000003C R			TEST	TMP1[EDI], AL 
+ 0044  0334					TMP2	DW	0334H 
+ 0046  2E: 84 87 00000044 R			TEST	TMP2[EDI], Al 
+masmc.ASM(47): warning A4031: Operand types must match
+ 004D  46454443					TMP3	DD	43444546H 
+Microsoft (R) Macro Assembler Version 5.00                  4/7/14 11:41:57
+                                                             Page     1-2
+
+
+ 0051  2E: 85 86 0000004D R			TEST	TMP3[ESI], EAX 
+						 
+ 0058  F3/ A5					REP		MOVS	ES:ID2[
+				EDI], ID3[ESI] 
+ 005A				CODE	ENDS 
+				 
+						END	BEGIN 
+Microsoft (R) Macro Assembler Version 5.00                  4/7/14 11:41:57
+                                                             Symbols-1
+
+
+
+
+                N a m e         	Size	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	32 Bit	005A	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	32 Bit	000F	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AR1  . . . . . . . . . . . . . .  	L DWORD	0007	DATA
+AR2  . . . . . . . . . . . . . .  	L DWORD	000B	DATA
+
+BEGIN  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+ID1  . . . . . . . . . . . . . .  	L BYTE	0000	DATA
+ID2  . . . . . . . . . . . . . .  	L WORD	0001	DATA
+ID3  . . . . . . . . . . . . . .  	L DWORD	0003	DATA
+
+LABELF . . . . . . . . . . . . .  	L NEAR	002D	CODE
+
+TMP1 . . . . . . . . . . . . . .  	L BYTE	003C	CODE
+TMP2 . . . . . . . . . . . . . .  	L WORD	0044	CODE
+TMP3 . . . . . . . . . . . . . .  	L DWORD	004D	CODE
+
+@FILENAME  . . . . . . . . . . .  	TEXT  masmc		
+
+
+     54 Source  Lines
+     54 Total   Lines
+     14 Symbols
+
+  51022 + 465522 Bytes symbol space free
+
+      2 Warning Errors
+      0 Severe  Errors

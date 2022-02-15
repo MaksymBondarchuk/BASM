@@ -1,0 +1,79 @@
+Bondarchuk (R) Macro Assembler               Tue Feb 15 08:00:39 2022
+
+      ;.386
+0000      DATA	SEGMENT
+0000  80     		ID1		DB	80H
+0001  00     		ID1x	DB	0
+0002  5F     		ID1y	DB	5FH
+0003  00     		ID1z	DB	0
+0004  0000     		ID2		DW	0
+0006  FFFFFFFD     		iD3		DD	-3
+000A  55FDAAF6     		AR1		DD	55FDAAF6H
+000E  80000000     		AR2		DD	80000000h
+0012      DATA	ENDS
+      
+0000      CODE	SEGMENT
+      		;ASSUME	CS:CODE, DS:DATA, ES:DATA
+      
+0000      BEGIN:
+0000  A4     		MOVSB
+0001  B9 0000000A     		mov		ecx, 10
+0006  B3 01     ggg:	MOV		BL, 1
+0008  02 C3     		ADD		AL, BL
+000A  03 D9     		ADD		EBX, ECX
+      		
+000C  B1 01     		MOV		CL, 0FH * 0 + 1 
+000E  0A 88 00000000         	OR		CL, id1[eax]
+0014  0A 80 00000000     		OR		AL, id1[eax]
+001A  3E: 0B 9D 00000006     		OR		EBX, ID3[EBP]
+      
+0021  B8 80000001     ttt:	MOV		EAX, 80000000h + 1
+0026  B3 03     		MOV		BL, 3
+      
+0028  84 86 00000000     		TEST	iD1[ESI], AL
+002E  85 87 00000006     		TEST	ID3[EDI], EAX
+      	
+0034  D1 A6 00000006     		SHL		ID3[ESI], 00000001B
+003A  C0 A2 00000000 R 11     		SHL		ID1[EDX], 11H
+0041  D0 A6 00000000     		SHL		ID1[ESI], 1
+0047  C0 A6 00000000 R 1F     		SHL		ID1[ESI], 31
+      		
+004E  75 B0     		JNZ		BEGIN
+0050  0F 75 00000056     		JNZ Label1
+0056      	Label1:
+      	
+0056  0D     		TMP1    DB	13
+0057  2E: 84 87 00000056     		TEST	TMP1[EDI], AL
+005E  0334     		TMP2	DW	0334H
+0060  00000004     		TMP3	DD	4h
+0064  2E: 85 86 00000060     		TEST	TMP3[ESI], EAX
+006B  2E: 0B 8E 00000060     		OR		ECX, TMP3[ESI]
+0072  2E: C1 A6 00000060 R 1F     		SHL		TMP3[ESI], 31
+      
+007A  F3/ A4     		REP		MOVS	ID1[EAX], ID1[EBP]
+007C  F3/ 2E: A4     		REP		MOVS	ID1[EDI], TMP1[ESI]
+007F      CODE	ENDS
+      		END	BEGIN
+
+        Name     Segment      Offset        Type
+         ID1        DATA        0000           1
+        ID1X        DATA        0001           1
+        ID1Y        DATA        0002           1
+        ID1Z        DATA        0003           1
+         ID2        DATA        0004           2
+         ID3        DATA        0006           4
+         AR1        DATA        000A           4
+         AR2        DATA        000E           4
+       BEGIN        CODE        0000           0
+         GGG        CODE        0006           0
+         TTT        CODE        0021           0
+      LABEL1        CODE        0056           0
+        TMP1        CODE        0056           1
+        TMP2        CODE        005E           2
+        TMP3        CODE        0060           4
+
+        Name        Size     Log seg
+        DATA        0012      'Data'
+        CODE        007F      'Code'
+
+      0 Errors

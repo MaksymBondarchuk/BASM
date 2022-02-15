@@ -1,0 +1,62 @@
+DATA	SEGMENT
+		ID1		DB	255
+		ID2		DW	1111B
+		iD3		DD	5BC35FF6H
+		/IMWRONG DB 12
+		METOO	DC  F24H
+		
+		
+		AR1		DD	10
+		AR2		DD	10
+DATA	ENDS
+
+CODE	SEGMENT
+	BEGIN:
+		LABEL_BACK:
+		; AND test
+		MOV		AX, 0FH			; Error
+		MOV		BL, 11H + 00001111B * 13
+		ADD		ID2, BL
+		ADD		EBX, ECX
+		
+		; OR test
+		MOV		CL, 00H
+		OR		CX, ID1
+		JNZ		LABEL_FRONT		; Error
+		
+		; TEST test
+		TEST	ID1, DS			; Error
+		TEST	ID3, EAX
+	
+		; MOV test
+		MOV		EAX, 0FFFFFFFH
+		MOV		BL, 0AH
+	
+		; INDEX test
+		TEST	iD3[EAX], 147	; Error
+		TEST	iD3[DI], 5H
+	
+	LABEL_FRONT:
+		; SHL test
+		SHL		ID3, 00000001B
+		SHL		ID1, 11111111H	; Error
+		
+		; JNZ TEST
+		JNZ		IDONTEXIST		; Error
+	
+		; SEGMENT change	
+		TMP1    DB	AL			; Error
+		TEST	TMP1, AL
+		TMP2	DW	0334H
+		SHL		TMP2, 3
+		TMP3	DD	43444546H
+		TEST	TMP3, EAX
+		
+	
+		MOV		ECX, 10
+		LEA		SI, AR1			; Error
+		LEA		DI, AR2			; Error
+		REP		MOVSB
+CODE	ENDS
+
+		END	BEGIN

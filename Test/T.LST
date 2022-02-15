@@ -1,0 +1,148 @@
+Microsoft (R) Macro Assembler Version 5.00                  4/25/14 00:32:36
+                                                             Page     1-1
+
+
+				;.386 
+ 0000				DATA	SEGMENT 
+ 0000  80					ID1		DB	80H 
+ 0001  FF					ID1x	DB	255 / 132H - 00
+				01B 
+ 0002  5F					ID1y	DB	5FH 
+ 0003  FF					ID1z	DB	11111111b 
+ 0004  FFFD					ID2		DW	-(1 + 2
+				) 
+ 0006  0A000000					iD3		DD	10 
+ 000A  F6AAFD55					AR1		DD	55FDAAF
+				6H 
+ 000E  00000080					AR2		DD	8000000
+				0h 
+ 0012				DATA	ENDS 
+				 
+ 0000				CODE	SEGMENT 
+						;ASSUME	CS:CODE, DS:DATA, ES:DA
+				TA 
+				 
+ 0000				BEGIN: 
+c.ASM(16): error A2062: Missing or unreachable CS
+ 0000  A4					MOVSB 
+ 0001  C7 06 0000 U 000A			mov		ecx, 10 
+c.ASM(18): error A2009: Symbol not defined: ECX
+ 0007  B3 1E			ggg:	MOV		BL, 11H + 00000001B * 1
+				3 
+c.ASM(19): error A2062: Missing or unreachable CS
+ 0009  02 C3					ADD		AL, BL 
+						ADD		EBX, ECX 
+c.ASM(21): error A2009: Symbol not defined: EBX
+						 
+ 000B  B1 01					MOV		CL, 0FH * 0 + 1
+				  
+ 000D  0A 0E 0000 R U		    	OR		CL, id1[eax] 
+c.ASM(24): error A2009: Symbol not defined: EAX
+ 0011  0A 06 0000 R U				OR		AL, id1[eax] 
+c.ASM(25): error A2009: Symbol not defined: EAX
+						OR		EBX, ID3[EBP] 
+c.ASM(26): error A2009: Symbol not defined: EBX
+ 0015  75 00					JNZ		LABELF 
+c.ASM(27): error A2009: Symbol not defined: LABELF
+				 
+ 0017  C7 06 0000 U 0001	ttt:	MOV		EAX, 80000000h + 1 
+c.ASM(29): error A2062: Missing or unreachable CS
+ 001D  B3 03					MOV		BL, 3 
+				 
+ 001F  84 06 0000 R U				TEST	iD1[ESI], AL 
+c.ASM(32): error A2009: Symbol not defined: ESI
+						TEST	ID3[EDI], EAX 
+c.ASM(33): error A2009: Symbol not defined: EDI
+					 
+						; SHL test 
+ 0023  66| D1 26 0006 R U			SHL		ID3[ESI], 00000
+Microsoft (R) Macro Assembler Version 5.00                  4/25/14 00:32:36
+                                                             Page     1-2
+
+
+				001B 
+c.ASM(36): error A2009: Symbol not defined: ESI
+ 0028  26 0000 R U				SHL		ID1[EDX], 11H 
+c.ASM(37): error A2009: Symbol not defined: EDX
+ 002B  D0 26 0000 R U				SHL		ID1[ESI], 1 
+c.ASM(38): error A2009: Symbol not defined: ESI
+ 002F  26 0000 R U				SHL		ID1[ESI], 31 
+c.ASM(39): error A2009: Symbol not defined: ESI
+						 
+						;JNZ		unexist 
+						;JNZ		unexist 
+						;JNZ		unexist 
+						 
+ 0032  75 CC					JNZ		BEGIN 
+ 0034  75 14					JNZ Label1 
+					Label1: 
+c.ASM(47): error A2062: Missing or unreachable CS
+					 
+ 004A  0D					TMP1    DB	13 
+c.ASM(49): error A2006: Phase error between passes
+ 004B  84 06 004A R				TEST	TMP1[EDI], AL 
+c.ASM(50): error A2009: Symbol not defined: EDI
+ 004F  0334					TMP2	DW	0334H 
+ 0051  04000000					TMP3	DD	4h 
+						TEST	TMP3[ESI], EAX 
+c.ASM(53): error A2009: Symbol not defined: ESI
+						OR		ECX, TMP3[ESI] 
+c.ASM(54): error A2009: Symbol not defined: ECX
+ 0055  66| 26 0051 R U				SHL		TMP3[ESI], 31 
+c.ASM(55): error A2009: Symbol not defined: ESI
+				 
+ 0059  F3/ A4					REP		MOVS	ID1[EAX
+				], ID1[EBP] 
+c.ASM(57): error A2009: Symbol not defined: EAX
+ 005B  F3/ A4					REP		MOVS	ID1[EDI
+				], TMP1[ESI] 
+c.ASM(58): error A2009: Symbol not defined: EDI
+ 005D				CODE	ENDS 
+						END	BEGIN 
+Microsoft (R) Macro Assembler Version 5.00                  4/25/14 00:32:36
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	005D	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	0012	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AR1  . . . . . . . . . . . . . .  	L DWORD	000A	DATA
+AR2  . . . . . . . . . . . . . .  	L DWORD	000E	DATA
+
+BEGIN  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+GGG  . . . . . . . . . . . . . .  	L NEAR	0007	CODE
+
+ID1  . . . . . . . . . . . . . .  	L BYTE	0000	DATA
+ID1X . . . . . . . . . . . . . .  	L BYTE	0001	DATA
+ID1Y . . . . . . . . . . . . . .  	L BYTE	0002	DATA
+ID1Z . . . . . . . . . . . . . .  	L BYTE	0003	DATA
+ID2  . . . . . . . . . . . . . .  	L WORD	0004	DATA
+ID3  . . . . . . . . . . . . . .  	L DWORD	0006	DATA
+
+LABEL1 . . . . . . . . . . . . .  	L NEAR	004A	CODE
+
+TMP1 . . . . . . . . . . . . . .  	L BYTE	004A	CODE
+TMP2 . . . . . . . . . . . . . .  	L WORD	004F	CODE
+TMP3 . . . . . . . . . . . . . .  	L DWORD	0051	CODE
+TTT  . . . . . . . . . . . . . .  	L NEAR	0023	CODE
+
+@FILENAME  . . . . . . . . . . .  	TEXT  c		
+
+
+     60 Source  Lines
+     60 Total   Lines
+     19 Symbols
+
+  51086 + 465458 Bytes symbol space free
+
+      0 Warning Errors
+     23 Severe  Errors

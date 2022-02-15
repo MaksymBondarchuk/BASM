@@ -1,0 +1,120 @@
+Microsoft (R) Macro Assembler Version 5.00                  4/25/14 00:37:45
+                                                             Page     1-1
+
+
+				.386 
+ 0000				DATA	SEGMENT 
+ 0000  80					ID1		DB	80H 
+ 0001  FF					ID1x	DB	255 / 132H - 00
+				01B 
+ 0002  5F					ID1y	DB	5FH 
+ 0003  FF					ID1z	DB	11111111b 
+ 0004  FFFD					ID2		DW	-(1 + 2
+				) 
+ 0006  0A000000					iD3		DD	10 
+ 000A  F6AAFD55					AR1		DD	55FDAAF
+				6H 
+ 000E  00000080					AR2		DD	8000000
+				0h 
+ 0012				DATA	ENDS 
+				 
+ 0000				CODE	SEGMENT 
+						ASSUME	CS:CODE, DS:DATA, ES:DA
+				TA 
+				 
+ 0000				BEGIN: 
+ 0000  A4					MOVSB 
+ 0001  B9 0000000A				mov		ecx, 10 
+ 0006  B3 1E			ggg:	MOV		BL, 11H + 00000001B * 1
+				3 
+ 0008  02 C3					ADD		AL, BL 
+ 000A  03 D9					ADD		EBX, ECX 
+						 
+ 000C  B1 01					MOV		CL, 0FH * 0 + 1
+				  
+ 000E  0A 88 00000000 R		    	OR		CL, id1[eax] 
+ 0014  0A 80 00000000 R				OR		AL, id1[eax] 
+ 001A  3E: 0B 9D 00000006 R			OR		EBX, ID3[EBP] 
+				 
+ 0021  B8 80000001		ttt:	MOV		EAX, 80000000h + 1 
+ 0026  B3 03					MOV		BL, 3 
+				 
+ 0028  84 86 00000000 R				TEST	iD1[ESI], AL 
+ 002E  85 87 00000006 R				TEST	ID3[EDI], EAX 
+					 
+ 0034  D1 A6 00000006 R				SHL		ID3[ESI], 00000
+				001B 
+ 003A  C0 A2 00000000 R 11			SHL		ID1[EDX], 11H 
+ 0041  D0 A6 00000000 R				SHL		ID1[ESI], 1 
+ 0047  C0 A6 00000000 R 1F			SHL		ID1[ESI], 31 
+						 
+ 004E  75 B0					JNZ		BEGIN 
+ 0050  0F 85 00000056 R				JNZ Label1 
+ 0056					Label1: 
+					 
+ 0056  0D					TMP1    DB	13 
+ 0057  2E: 84 87 00000056 R			TEST	TMP1[EDI], AL 
+ 005E  0334					TMP2	DW	0334H 
+ 0060  04000000					TMP3	DD	4h 
+Microsoft (R) Macro Assembler Version 5.00                  4/25/14 00:37:45
+                                                             Page     1-2
+
+
+ 0064  2E: 85 86 00000060 R			TEST	TMP3[ESI], EAX 
+ 006B  2E: 0B 8E 00000060 R			OR		ECX, TMP3[ESI] 
+ 0072  2E: C1 A6 00000060 R			SHL		TMP3[ESI], 31 
+       1F			
+				 
+ 007A  F3/ A4					REP		MOVS	ID1[EAX
+				], ID1[EBP] 
+ 007C  F3/ 2E: A4				REP		MOVS	ID1[EDI
+				], TMP1[ESI] 
+ 007F				CODE	ENDS 
+						END	BEGIN 
+Microsoft (R) Macro Assembler Version 5.00                  4/25/14 00:37:45
+                                                             Symbols-1
+
+
+
+
+                N a m e         	Size	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	32 Bit	007F	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	32 Bit	0012	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AR1  . . . . . . . . . . . . . .  	L DWORD	000A	DATA
+AR2  . . . . . . . . . . . . . .  	L DWORD	000E	DATA
+
+BEGIN  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+GGG  . . . . . . . . . . . . . .  	L NEAR	0006	CODE
+
+ID1  . . . . . . . . . . . . . .  	L BYTE	0000	DATA
+ID1X . . . . . . . . . . . . . .  	L BYTE	0001	DATA
+ID1Y . . . . . . . . . . . . . .  	L BYTE	0002	DATA
+ID1Z . . . . . . . . . . . . . .  	L BYTE	0003	DATA
+ID2  . . . . . . . . . . . . . .  	L WORD	0004	DATA
+ID3  . . . . . . . . . . . . . .  	L DWORD	0006	DATA
+
+LABEL1 . . . . . . . . . . . . .  	L NEAR	0056	CODE
+
+TMP1 . . . . . . . . . . . . . .  	L BYTE	0056	CODE
+TMP2 . . . . . . . . . . . . . .  	L WORD	005E	CODE
+TMP3 . . . . . . . . . . . . . .  	L DWORD	0060	CODE
+TTT  . . . . . . . . . . . . . .  	L NEAR	0021	CODE
+
+@FILENAME  . . . . . . . . . . .  	TEXT  c		
+
+
+     54 Source  Lines
+     54 Total   Lines
+     19 Symbols
+
+  51086 + 465458 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

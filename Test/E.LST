@@ -1,0 +1,136 @@
+Microsoft (R) Macro Assembler Version 5.00                  4/25/14 00:49:20
+                                                             Page     1-1
+
+
+				.386 
+ 0000				DATA	SEGMENT 
+ 0000  80					ID1		DB	80H 
+ 0001  FF					ID1x	DB	255 / 132H - 00
+				01B 
+ 0002  5F					ID1y	DB	5FH 
+ 0003  FF					ID1z	DB	11111111b 
+ 0004  FFFD					ID2		DW	-(1 + 2
+				) 
+ 0006  0A000000					iD3		DD	10d 
+ 000A  F6AAFD55					AR_		DD	55FDAAF
+				6H 
+ 000E  00000080					AR2		DD	8000000
+				0h 
+ 0012				DATA	ENDS 
+				 
+ 0000				CODE	SEGMENT 
+						ASSUME	CS:CODE, DS:DATA, ES:DA
+				TA 
+				 
+ 0000				BEGIN: 
+ 0000  A4					MOVSB 
+ 0001  66| B9 000A				mov		cx, 10 
+ 0005  B3 1E			ggg:	MOV		BL, 11H + 00000001B * 1
+				3 
+ 0007  02 C3					ADD		AL, BL 
+ 0009  03 DB					ADD		EBX, BL 
+e.ASM(21): warning A4031: Operand types must match
+						 
+ 000B  B1 01					MOV		CL, 0FH * 0 + 1
+				  
+ 000D  0A 88 00000004 R		    	OR		CL, id2[eax] 
+e.ASM(24): warning A4031: Operand types must match
+ 0013  0A 0445 00000000 R			OR		AL, id1[eax*2] 
+ 001A  3E: 0B 9D 00000006 R			OR		EBX, ID3[EBP] 
+				 
+ 0021  A4			ttt:	MOVSB	EAX, 800000000h + 1 
+e.ASM(28): warning A4001: Extra characters on line
+ 0022  B3 03					MOV		BL, 3 
+				 
+ 0024  F6 86 00000000 R 00			TEST	iD1[ESI], ;AL 
+e.ASM(31): warning A4101: Missing data; zero assumed
+ 002B  85 87 00000006 R				TEST	ID3[EDI], EAX 
+					 
+ 0031  2E: D0 A6 00000053 R			SHL		TMP1[ESI], 0000
+				0001B 
+ 0038  C0 A2 00000000 R 11			SHL		ID1[EDX], 11H 
+ 003F  D0 A6 00000000 R				SHL		ID1[ESI], 1 
+ 0045  C0 A6 00000000 R 1F			SHL		ID1[ESI], 31 
+						 
+ 004C  75 B2					JNZ		BEGIN 
+ 004E  0F 85 00000000 U				JNZ Label11 
+e.ASM(40): error A2009: Symbol not defined: LABEL11
+					Label1: 
+e.ASM(41): error A2006: Phase error between passes
+Microsoft (R) Macro Assembler Version 5.00                  4/25/14 00:49:20
+                                                             Page     1-2
+
+
+					 
+ 0053  0D					TMP1    DB	13 
+ 0054  2E: 84 87 00000053 R			TEST	TMP1[EDI], AL 
+ 005B  0334					TMP2	DW	0334H 
+ 005D  00000000 U				TMP3	DD	F4h 
+e.ASM(46): error A2009: Symbol not defined: F4H
+ 0061  2E: 85 86 0000005D R			TEST	TMP3[ESI], EAX 
+ 0068  2E: 0B 8E 0000005D R			OR		ECX, TMP3[ESI] 
+ 006F  2E: C1 A6 0000005D R			SHL		TMP3[ESI], 31 
+       1F			
+				 
+ 0077  F3/ A4					REP		MOVS	ID1[EAX
+				], ID1[EBP] 
+ 0079  F3/ 2E: A4				REP		MOVS	ID1[EDI
+				], TMP1[ESI] 
+ 007C				CODE	ENDS 
+				 
+				 
+ 0000				BAD		SEGMENT 
+ 0000  0C					wrong	DB	12 
+ 0001				BAD		ENDS 
+				 
+						END	BEGIN 
+Microsoft (R) Macro Assembler Version 5.00                  4/25/14 00:49:20
+                                                             Symbols-1
+
+
+
+
+                N a m e         	Size	Length	 Align	Combine Class
+
+BAD  . . . . . . . . . . . . . .  	32 Bit	0001	PARA	NONE	
+CODE . . . . . . . . . . . . . .  	32 Bit	007C	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	32 Bit	0012	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AR2  . . . . . . . . . . . . . .  	L DWORD	000E	DATA
+AR_  . . . . . . . . . . . . . .  	L DWORD	000A	DATA
+
+BEGIN  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+GGG  . . . . . . . . . . . . . .  	L NEAR	0005	CODE
+
+ID1  . . . . . . . . . . . . . .  	L BYTE	0000	DATA
+ID1X . . . . . . . . . . . . . .  	L BYTE	0001	DATA
+ID1Y . . . . . . . . . . . . . .  	L BYTE	0002	DATA
+ID1Z . . . . . . . . . . . . . .  	L BYTE	0003	DATA
+ID2  . . . . . . . . . . . . . .  	L WORD	0004	DATA
+ID3  . . . . . . . . . . . . . .  	L DWORD	0006	DATA
+
+LABEL1 . . . . . . . . . . . . .  	L NEAR	0053	CODE
+
+TMP1 . . . . . . . . . . . . . .  	L BYTE	0053	CODE
+TMP2 . . . . . . . . . . . . . .  	L WORD	005B	CODE
+TMP3 . . . . . . . . . . . . . .  	L DWORD	005D	CODE
+TTT  . . . . . . . . . . . . . .  	L NEAR	0021	CODE
+
+WRONG  . . . . . . . . . . . . .  	L BYTE	0000	BAD
+
+@FILENAME  . . . . . . . . . . .  	TEXT  e		
+
+
+     60 Source  Lines
+     60 Total   Lines
+     21 Symbols
+
+  51008 + 465536 Bytes symbol space free
+
+      4 Warning Errors
+      3 Severe  Errors

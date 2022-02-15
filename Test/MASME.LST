@@ -1,0 +1,133 @@
+Microsoft (R) Macro Assembler Version 5.00                  2/20/14 12:53:19
+                                                             Page     1-1
+
+
+				.386 
+				 
+ 0000				DATA	SEGMENT 
+ 0000  FF					ID1		DB	255 
+ 0001  000F					ID2		DW	1111B 
+ 0003  F65FC35B					iD3		DD	5BC35FF
+				6H 
+						/IMWRONG DB 12 
+masme.ASM(7): warning A4001: Extra characters on line
+						METOO	DC  F24H 
+masme.ASM(8): error A2105: Expected: instruction or directive
+						 
+						 
+ 0007  0A000000					AR1		DD	10 
+ 000B  0A000000					AR2		DD	10 
+ 000F				DATA	ENDS 
+				 
+ 0000				CODE	SEGMENT 
+						ASSUME DS:DATA, CS:CODE 
+				 
+ 0000					BEGIN: 
+ 0000						LABEL_BACK: 
+						; AND test 
+ 0000  66| B8 000F				MOV		AX, 0FH	
+						; Error 
+ 0004  B3 D4					MOV		BL, 11H + 00001
+				111B * 13 
+ 0006  00 1D 00000001 R				ADD		ID2, BL 
+masme.ASM(23): warning A4031: Operand types must match
+ 000C  03 D9					ADD		EBX, ECX 
+						 
+						; OR test 
+ 000E  B1 00					MOV		CL, 00H 
+ 0010  0A 0D 00000000 R				OR		CL, ID1 
+ 0016  0F 85 00000042 R				JNZ		LABEL_FRONT
+						; Error 
+						 
+						; TEST test 
+ 001C  85 1D 00000000 R				TEST	ID1, DS		
+					; Error 
+masme.ASM(32): error A2061: Improper use of segment register
+ 0022  85 05 00000003 R				TEST	ID3, EAX 
+					 
+						; MOV test 
+ 0028  B8 0FFFFFFF				MOV		EAX, 0FFFFFFFH 
+ 002D  B3 0A					MOV		BL, 0AH 
+					 
+						; INDEX test 
+ 002F  F7 80 00000003 R 0000			TEST	iD3[EAX], 147	; Error
+				 
+       0093			
+ 0039  67| F7 85 0003 R 0000			TEST	iD3[DI], 5H 
+       0005			
+					 
+Microsoft (R) Macro Assembler Version 5.00                  2/20/14 12:53:19
+                                                             Page     1-2
+
+
+ 0042					LABEL_FRONT: 
+						; SHL test 
+ 0042  D1 25 00000003 R				SHL		ID3, 00000001B 
+ 0048  C0 25 00000000 R 11111111		SHL		ID1, 11111111H 
+masme.ASM(46): error A2050: Value out of range
+						 
+						; JNZ TEST 
+ 0052  75 AC					JNZ		LABEL_BACK
+						; Error 
+					 
+						; SEGMENT change	 
+ 0054  00					TMP1    DB	AL	
+						; Error 
+masme.ASM(52): error A2052: Improper operand type
+ 0055  2E: 84 05 00000054 R			TEST	TMP1, AL 
+ 005C  0334					TMP2	DW	0334H 
+ 005E  2E: 66| C1 25 0000005C			SHL		TMP2, 3 
+	R 03			
+ 0067  46454443					TMP3	DD	43444546H 
+ 006B  2E: 85 05 00000067 R			TEST	TMP3, EAX 
+						 
+					 
+ 0072  B9 0000000A				MOV		ECX, 10 
+ 0077  8D 35 00000007 R				LEA		SI, AR1 
+ 007D  8D 3D 0000000B R				LEA		DI, AR2 
+ 0083  F3/ A4					REP		MOVSB 
+ 0085				CODE	ENDS 
+				 
+						END	BEGIN 
+Microsoft (R) Macro Assembler Version 5.00                  2/20/14 12:53:19
+                                                             Symbols-1
+
+
+
+
+                N a m e         	Size	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	32 Bit	0085	PARA	NONE	
+DATA . . . . . . . . . . . . . .  	32 Bit	000F	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+AR1  . . . . . . . . . . . . . .  	L DWORD	0007	DATA
+AR2  . . . . . . . . . . . . . .  	L DWORD	000B	DATA
+
+BEGIN  . . . . . . . . . . . . .  	L NEAR	0000	CODE
+
+ID1  . . . . . . . . . . . . . .  	L BYTE	0000	DATA
+ID2  . . . . . . . . . . . . . .  	L WORD	0001	DATA
+ID3  . . . . . . . . . . . . . .  	L DWORD	0003	DATA
+
+LABEL_BACK . . . . . . . . . . .  	L NEAR	0000	CODE
+LABEL_FRONT  . . . . . . . . . .  	L NEAR	0042	CODE
+
+TMP1 . . . . . . . . . . . . . .  	L BYTE	0054	CODE
+TMP2 . . . . . . . . . . . . . .  	L WORD	005C	CODE
+TMP3 . . . . . . . . . . . . . .  	L DWORD	0067	CODE
+
+@FILENAME  . . . . . . . . . . .  	TEXT  masme		
+
+
+     66 Source  Lines
+     66 Total   Lines
+     15 Symbols
+
+  51060 + 465484 Bytes symbol space free
+
+      2 Warning Errors
+      4 Severe  Errors
